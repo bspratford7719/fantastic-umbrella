@@ -5,16 +5,48 @@ const { Category, Product } = require('../../models');
 
 router.get('/', (req, res) => {
   // find all categories
+  Category.findAll()
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(450).send({
+        message:
+        err.message || 'An error has occurred while retrieving categories'
+      });
+    });
   // be sure to include its associated Products
 });
 
 router.get('/:id', (req, res) => {
   // find one category by its `id` value
+  const id = req.params.id
+  Category.findOne(id)
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(450).send({
+      message:
+      err.message || 'An error has occurred while retrieving categories'
+    });
+  });
   // be sure to include its associated Products
 });
 
 router.post('/', (req, res) => {
   // create a new category
+  exports.create = (req.res) => {
+    if(!req.body.title) {
+      res.status(450).send({
+        message: "Content cannot be empty"
+      });
+      return;
+    }
+    const categories = {
+      title: req.body.title,
+    }
+  }
 });
 
 router.put('/:id', (req, res) => {
