@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { response } = require('express');
 const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
@@ -36,25 +37,73 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new category
-  exports.create = (req.res) => {
-    if(!req.body.title) {
+    if(!req.body.category_name) {
       res.status(450).send({
         message: "Content cannot be empty"
       });
       return;
     }
-    const categories = {
-      title: req.body.title,
-    }
-  }
+    const category = {
+      category_name: req.body.category_name,
+    };
+    Category.create(Category)
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(450).send({
+          message:
+            err.message || "An error occurred while creating the categories"
+        });
+      });
 });
 
 router.put('/:id', (req, res) => {
   // update a category by its `id` value
+  const id = req.params.id;
+  category.update(req.body, {
+    where: {id:id}
+  })
+  .then (num => {
+    if (num === 1) {
+      res.send({
+        message: "Category was updated"
+      });
+    } else {
+      res.send({
+        message: 'Cannot update Category with id=${id}.'
+      });
+    }
+  })
+  .catch(err => {
+    res.status(450).send({
+      message: "Error updating Category with id=" + id
+    });
+  });
 });
 
 router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
+  const id = req.params.id;
+  Category.destroy({
+    where: {id:id}
+  })
+  .then(num => {
+    if (num == 1) {
+      res.send({
+        message: "Category was deleted"
+      });
+    } else {
+      res.send({
+        message: "Cannot delete Category with id=${id}."
+      });
+    }
+  })
+  .catch(err => {
+    res.status(450).send({
+      message: "Could not delete Category with id=" + id
+    });
+  });
 });
 
 module.exports = router;
