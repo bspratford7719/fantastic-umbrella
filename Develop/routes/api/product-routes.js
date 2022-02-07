@@ -1,17 +1,39 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
+
 // The `/api/products` endpoint
 
 // get all products
 router.get('/', (req, res) => {
   // find all products
+  Product.findAll()
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(450).send({
+      message:
+      err.message || 'An error has occurred while retrieving products'
+    });
+  });
   // be sure to include its associated Category and Tag data
 });
 
 // get one product
 router.get('/:id', (req, res) => {
   // find a single product by its `id`
+  const id = req.params.id
+  Product.findOne(id)
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(450).send({
+      message:
+      err.message || 'An error has occurred while retrieving products'
+    });
+  });
   // be sure to include its associated Category and Tag data
 });
 
@@ -25,6 +47,9 @@ router.post('/', (req, res) => {
       tagIds: [1, 2, 3, 4]
     }
   */
+  const product = {
+    product_name: req.body.product_name,
+  };
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
@@ -91,6 +116,26 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
+  const id = req.params.id;
+  Product.destroy({
+    where: {id:id}
+  })
+  .then(num => {
+    if (num == 1) {
+      res.send({
+        message: "Product was deleted"
+      });
+    } else {
+      res.send({
+        message: "Cannot delete Product with id=${id}."
+      });
+    }
+  })
+  .catch(err => {
+    res.status(450).send({
+      message: "Could not delete Product with id=" + id
+    });
+  });
 });
 
 module.exports = router;
