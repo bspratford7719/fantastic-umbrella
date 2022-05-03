@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.19.0"
+  },
+  "name": "fantastic-umbrella",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bspratford7719/fantastic-umbrella.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bspratford7719/fantastic-umbrella/issues"
+  },
+  "homepage": "https://github.com/bspratford7719/fantastic-umbrella#readme"
+}
